@@ -1,27 +1,49 @@
 os: linux
 language: c
+
+.com.github.junaruga.ci-clock-test.jobs-definitions:
+  - &test_in_container
+    language: minimal
+    services: docker
+    install: true
+    before_script: true
+    install:
+      - |
+        travis_retry docker build --rm -t my-container \
+          --build-arg BASE_IMAGE=${BASE_IMAGE} \
+          -f Dockerfile-centos \
+          .
+    script:
+      - docker run --rm -t my-container make test
+
 jobs:
   include:
-    - name: "amd64 (x86_64) - bionic"
+    - name: "amd64 (x86_64) - Ubuntu bionic"
       arch: amd64
       dist: bionic
       compiler: gcc
-    - name: "amd64 (x86_64) - xenial"
+    - name: "amd64 (x86_64) - Ubuntu xenial"
       arch: amd64
       dist: xenial
       compiler: gcc
-    - name: "amd64 (x86_64) - trusty"
+    - name: "amd64 (x86_64) - Ubuntu trusty"
       arch: amd64
       dist: trusty
       compiler: gcc
+    - env:
+        - BASE_IMAGE=centos:8.1.1911
+      <<: *test_in_container
+    - env:
+        - BASE_IMAGE=centos:7.7.1908
+      <<: *test_in_container
   allow_failures:
+    - name: "amd64 (x86_64) - Ubuntu trusty"
   fast_finish: true
 install: true
 before_script:
   - uname -a
   - uname -r
   - $CC --version
-  - $CC --help || true
 script:
   - make test
 branches:
