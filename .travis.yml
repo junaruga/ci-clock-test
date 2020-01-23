@@ -1,0 +1,30 @@
+os: linux
+language: c
+jobs:
+  include:
+    - name: "amd64 (x86_64) - bionic"
+      arch: amd64
+      dist: bionic
+      compiler: gcc
+    - name: "amd64 (x86_64) - xenial"
+      arch: amd64
+      dist: xenial
+      compiler: gcc
+    - name: "amd64 (x86_64) - trusty"
+      arch: amd64
+      dist: trusty
+      compiler: gcc
+  allow_failures:
+  fast_finish: true
+install: true
+before_script:
+  - uname -a
+  - uname -r
+  - $CC --version
+  - $CC --help || true
+script:
+  - make test
+branches:
+  except:
+    # Enable branches except the working in progress branchs "wip/"
+    - /^wip\//
