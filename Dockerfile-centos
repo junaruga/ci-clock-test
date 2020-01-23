@@ -1,0 +1,10 @@
+ARG BASE_IMAGE=centos:7
+FROM ${BASE_IMAGE}
+
+WORKDIR /work
+COPY . .
+RUN yum -y install file gcc make
+RUN uname -a
+RUN uname -r
+RUN rpm -q gcc
+RUN gcc --version
