@@ -6,6 +6,7 @@ all : check-env $(TARGET)
 .PHONY : all
 
 check-env :
+	$(CC) --version
 	script/check_env.sh
 .PHONY : check-env
 
