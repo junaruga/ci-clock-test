@@ -30,14 +30,26 @@ jobs:
       arch: amd64
       dist: trusty
       compiler: gcc
-    - env:
+    - name: "CentOS 8.1"
+      env:
         - BASE_IMAGE=centos:8.1.1911
       <<: *test_in_container
-    - env:
+    - name: "CentOS 7.7"
+      env:
         - BASE_IMAGE=centos:7.7.1908
+      <<: *test_in_container
+    - name: "CentOS 6.10"
+      env:
+        - BASE_IMAGE=centos:6.10
+      <<: *test_in_container
+    - name: "CentOS 6.6"
+      env:
+        - BASE_IMAGE=centos:6.6
       <<: *test_in_container
   allow_failures:
     - name: "amd64 (x86_64) - Ubuntu trusty"
+    - name: "CentOS 6.10"
+    - name: "CentOS 6.6"
   fast_finish: true
 install: true
 before_script:
